@@ -1,0 +1,124 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+class Pessoa {
+    private static int kp = 0;
+    private String nome;
+    private char sexo;
+    private int idade;
+
+    public Pessoa() {
+        // Construtor padrão
+    }
+
+    public Pessoa(String nome, char sexo, int idade) {
+        this.nome = nome;
+        this.sexo = sexo;
+        this.idade = idade;
+        kp++;
+    }
+
+    public static int getKp() {
+        return kp;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setSexo(char sexo) {
+        this.sexo = sexo;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public char getSexo() {
+        return sexo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+}
+
+public class FormPessoa extends JFrame {
+    private JTextField nomeField;
+    private JTextField idadeField;
+    private JRadioButton masculinoButton;
+    private JRadioButton femininoButton;
+    private JButton okButton;
+    private JButton mostrarButton;
+    private JTextArea outputArea;
+    private Pessoa umaPessoa;
+
+    public FormPessoa() {
+        setTitle("Formulário Pessoa");
+        setSize(300, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        nomeField = new JTextField(15);
+        idadeField = new JTextField(15);
+        masculinoButton = new JRadioButton("M");
+        femininoButton = new JRadioButton("F");
+        ButtonGroup sexoGroup = new ButtonGroup();
+        sexoGroup.add(masculinoButton);
+        sexoGroup.add(femininoButton);
+        
+        okButton = new JButton("OK");
+        mostrarButton = new JButton("Mostrar");
+        outputArea = new JTextArea(5, 20);
+        outputArea.setEditable(false);
+
+        add(new JLabel("Nome:"));
+        add(nomeField);
+        add(new JLabel("Idade:"));
+        add(idadeField);
+        add(new JLabel("Sexo:"));
+        add(masculinoButton);
+        add(femininoButton);
+        add(okButton);
+        add(mostrarButton);
+        add(new JScrollPane(outputArea));
+
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nome = nomeField.getText();
+                char sexo = masculinoButton.isSelected() ? 'M' : 'F';
+                int idade = Integer.parseInt(idadeField.getText());
+                umaPessoa = new Pessoa(nome, sexo, idade);
+                JOptionPane.showMessageDialog(null, "Pessoa cadastrada!");
+            }
+        });
+
+        mostrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (umaPessoa != null) {
+                    outputArea.setText("Nome: " + umaPessoa.getNome() + "\n" +
+                                       "Sexo: " + umaPessoa.getSexo() + "\n" +
+                                       "Idade: " + umaPessoa.getIdade() + "\n" +
+                                       "Total de pessoas: " + Pessoa.getKp());
+                } else {
+                    outputArea.setText("Nenhuma pessoa cadastrada.");
+                }
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            FormPessoa form = new FormPessoa();
+            form.setVisible(true);
+        });
+    }
+}
