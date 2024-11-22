@@ -1,0 +1,109 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+class Pessoa {
+    private static int kp = 0;
+    private String nome;
+    private char sexo;
+    private int idade;
+
+    public Pessoa() {
+        kp++;
+    }
+
+    public Pessoa(String nome, char sexo, int idade) {
+        this.nome = nome;
+        this.sexo = sexo;
+        this.idade = idade;
+        kp++;
+    }
+
+    public static int getKp() {
+        return kp;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setSexo(char sexo) {
+        this.sexo = sexo;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public char getSexo() {
+        return sexo;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+}
+
+public class FormPessoa {
+    private JFrame frame;
+    private JTextField txtNome, txtSexo, txtIdade;
+    private Pessoa umaPessoa;
+
+    public FormPessoa() {
+        frame = new JFrame("Cadastro de Pessoa");
+        txtNome = new JTextField();
+        txtSexo = new JTextField();
+        txtIdade = new JTextField();
+        JButton btnOK = new JButton("OK");
+        JButton btnMostrar = new JButton("Mostrar");
+
+        txtNome.setBounds(30, 40, 200, 30);
+        txtSexo.setBounds(30, 80, 200, 30);
+        txtIdade.setBounds(30, 120, 200, 30);
+        btnOK.setBounds(30, 160, 80, 30);
+        btnMostrar.setBounds(120, 160, 100, 30);
+
+        frame.add(txtNome);
+        frame.add(txtSexo);
+        frame.add(txtIdade);
+        frame.add(btnOK);
+        frame.add(btnMostrar);
+
+        btnOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = txtNome.getText();
+                char sexo = txtSexo.getText().charAt(0);
+                int idade = Integer.parseInt(txtIdade.getText());
+                umaPessoa = new Pessoa(nome, sexo, idade);
+                JOptionPane.showMessageDialog(frame, "Pessoa cadastrada!");
+            }
+        });
+
+        btnMostrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (umaPessoa != null) {
+                    String info = "Nome: " + umaPessoa.getNome() + "\n" +
+                                  "Sexo: " + umaPessoa.getSexo() + "\n" +
+                                  "Idade: " + umaPessoa.getIdade() + "\n" +
+                                  "Total de Pessoas: " + Pessoa.getKp();
+                    JOptionPane.showMessageDialog(frame, info);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Nenhuma pessoa cadastrada.");
+                }
+            }
+        });
+
+        frame.setSize(300, 250);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        new FormPessoa();
+    }
+}
